@@ -1,7 +1,7 @@
 package com.salesianostriana.dam.trianafy.service;
 
 
-import com.salesianostriana.dam.trianafy.model.Artist;
+import com.salesianostriana.dam.trianafy.model.Artista;
 import com.salesianostriana.dam.trianafy.repos.ArtistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,24 +16,24 @@ public class ArtistService {
     private final ArtistRepository repository;
 
 
-    public Artist add(Artist artist) {
-        return repository.save(artist);
+    public Artista add(Artista artista) {
+        return repository.save(artista);
     }
 
-    public Optional<Artist> findById(Long id) {
+    public Optional<Artista> findById(Long id) {
         return repository.findById(id);
     }
 
-    public List<Artist> findAll() {
+    public List<Artista> findAll() {
         return repository.findAll();
     }
 
-    public Artist edit(Artist artist) {
-        return repository.save(artist);
+    public Artista edit(Artista artista) {
+        return repository.save(artista);
     }
 
-    public void delete(Artist artist) {
-        repository.delete(artist);
+    public void delete(Artista artista) {
+        repository.delete(artista);
     }
 
     public void deleteById(Long id) {
