@@ -23,8 +23,8 @@ public class Song {
     @Column(name = "year_of_song")
     private String year;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Artist artist;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    private Artista artista;
 
 
 }

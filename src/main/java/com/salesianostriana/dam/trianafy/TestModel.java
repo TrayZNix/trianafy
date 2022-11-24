@@ -1,6 +1,6 @@
 package com.salesianostriana.dam.trianafy;
 
-import com.salesianostriana.dam.trianafy.model.Artist;
+import com.salesianostriana.dam.trianafy.model.Artista;
 import com.salesianostriana.dam.trianafy.model.Playlist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
@@ -23,74 +23,74 @@ public class TestModel {
     @PostConstruct
     public void run() {
 
-        Artist a1 = Artist.builder()
+        Artista a1 = Artista.builder()
                 .name("Joaquín Sabina")
                 .build();
 
-        Artist a2 = Artist.builder()
+        Artista a2 = Artista.builder()
                 .name("Dua Lipa")
                 .build();
 
-        Artist a3 = Artist.builder()
+        Artista a3 = Artista.builder()
                 .name("Metallica")
                 .build();
 
-        List<Artist> artistList = List.of(a1, a2, a3);
+        List<Artista> artistaList = List.of(a1, a2, a3);
 
-        artistList.forEach(artistService::add);
+        artistaList.forEach(artistService::add);
 
         Song s1a1 = Song.builder()
                 .album("19 días y 500 noches")
-                .artist(a1)
+                .artista(a1)
                 .year("1999")
                 .title("19 días y 500 noches")
                 .build();
 
         Song s2a1 = Song.builder()
                 .album("19 días y 500 noches")
-                .artist(a1)
+                .artista(a1)
                 .year("1999")
                 .title("Donde habita el olvido")
                 .build();
 
         Song s3a1 = Song.builder()
                 .album("19 días y 500 noches")
-                .artist(a1)
+                .artista(a1)
                 .year("1999")
                 .title("A mis cuarenta y diez")
                 .build();
 
         Song s1a2 = Song.builder()
                 .album("Future Nostalgia")
-                .artist(a2)
+                .artista(a2)
                 .year("2019")
                 .title("Don't Start Now")
                 .build();
 
         Song s2a2 = Song.builder()
                 .album("Future Nostalgia")
-                .artist(a2)
+                .artista(a2)
                 .year("2021")
                 .title("Love Again")
                 .build();
 
         Song s1a3 = Song.builder()
                 .album("Metallica")
-                .artist(a3)
+                .artista(a3)
                 .year("1991")
                 .title("Enter Sandman")
                 .build();
 
         Song s2a3 = Song.builder()
                 .album("Metallica")
-                .artist(a3)
+                .artista(a3)
                 .year("1991")
                 .title("Unforgiven")
                 .build();
 
         Song s3a3 = Song.builder()
                 .album("Metallica")
-                .artist(a3)
+                .artista(a3)
                 .year("1991")
                 .title("Nothing Else Matters")
                 .build();

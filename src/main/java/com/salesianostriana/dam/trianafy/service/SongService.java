@@ -1,7 +1,6 @@
 package com.salesianostriana.dam.trianafy.service;
 
 
-import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repos.SongRepository;
 import lombok.RequiredArgsConstructor;
