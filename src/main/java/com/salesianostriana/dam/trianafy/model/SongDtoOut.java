@@ -1,17 +1,15 @@
 package com.salesianostriana.dam.trianafy.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SongDto {
+public class SongDtoOut {
+    private Long id;
     private String title;
     private String album;
     private String year;
-    private Long artistaId;
+    private String artist;
 }
