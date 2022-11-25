@@ -54,9 +54,9 @@ public class ArtistaController {
         if(repoArtist.existsById(id)){
             List<Song> canciones = repoSongs.findAll();
             canciones.forEach(song -> {
-                if(song.getArtista()!=null){
-                    if(song.getArtista().getId().equals(id)){
-                        song.setArtista(null);
+                if(song.getArtist()!=null){
+                    if(song.getArtist().getId().equals(id)){
+                        song.setArtist(null);
                     }
                 }
             });

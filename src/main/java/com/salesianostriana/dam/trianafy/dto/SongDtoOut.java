@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.trianafy.model;
+package com.salesianostriana.dam.trianafy.dto;
 
 import lombok.*;
 

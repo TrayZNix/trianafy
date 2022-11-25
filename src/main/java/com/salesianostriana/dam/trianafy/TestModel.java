@@ -41,56 +41,56 @@ public class TestModel {
 
         Song s1a1 = Song.builder()
                 .album("19 días y 500 noches")
-                .artista(a1)
+                .artist(a1)
                 .year("1999")
                 .title("19 días y 500 noches")
                 .build();
 
         Song s2a1 = Song.builder()
                 .album("19 días y 500 noches")
-                .artista(a1)
+                .artist(a1)
                 .year("1999")
                 .title("Donde habita el olvido")
                 .build();
 
         Song s3a1 = Song.builder()
                 .album("19 días y 500 noches")
-                .artista(a1)
+                .artist(a1)
                 .year("1999")
                 .title("A mis cuarenta y diez")
                 .build();
 
         Song s1a2 = Song.builder()
                 .album("Future Nostalgia")
-                .artista(a2)
+                .artist(a2)
                 .year("2019")
                 .title("Don't Start Now")
                 .build();
 
         Song s2a2 = Song.builder()
                 .album("Future Nostalgia")
-                .artista(a2)
+                .artist(a2)
                 .year("2021")
                 .title("Love Again")
                 .build();
 
         Song s1a3 = Song.builder()
                 .album("Metallica")
-                .artista(a3)
+                .artist(a3)
                 .year("1991")
                 .title("Enter Sandman")
                 .build();
 
         Song s2a3 = Song.builder()
                 .album("Metallica")
-                .artista(a3)
+                .artist(a3)
                 .year("1991")
                 .title("Unforgiven")
                 .build();
 
         Song s3a3 = Song.builder()
                 .album("Metallica")
-                .artista(a3)
+                .artist(a3)
                 .year("1991")
                 .title("Nothing Else Matters")
                 .build();
