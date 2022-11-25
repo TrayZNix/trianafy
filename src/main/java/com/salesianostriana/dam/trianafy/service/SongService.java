@@ -1,6 +1,9 @@
 package com.salesianostriana.dam.trianafy.service;
 
 
+import com.salesianostriana.dam.trianafy.dto.SongDtoIn;
+import com.salesianostriana.dam.trianafy.dto.SongDtoOut;
+import com.salesianostriana.dam.trianafy.mappers.SongMapper;
 import com.salesianostriana.dam.trianafy.model.*;
 import com.salesianostriana.dam.trianafy.repos.ArtistRepository;
 import com.salesianostriana.dam.trianafy.repos.SongRepository;
@@ -9,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +64,7 @@ public class SongService {
                 if(song.getArtistId() != null){
                     Optional<Artista> artista = repoArtista.findById(song.getArtistId());
                     if(!artista.isEmpty()){
-                        inDbSong.setArtista(artista.get());
+                        inDbSong.setArtist(artista.get());
                     }
                     else{
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

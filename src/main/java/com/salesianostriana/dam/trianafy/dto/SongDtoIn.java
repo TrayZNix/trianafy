@@ -1,9 +1,8 @@
-package com.salesianostriana.dam.trianafy.model;
+package com.salesianostriana.dam.trianafy.dto;
 
 import lombok.*;
 
 import javax.persistence.Column;
-import javax.validation.constraints.Null;
 
 @Data
 @NoArgsConstructor

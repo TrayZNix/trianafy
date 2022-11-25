@@ -1,30 +1,21 @@
-package com.salesianostriana.dam.trianafy.model;
+package com.salesianostriana.dam.trianafy.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class Song {
+public class SongDtoModifiedArtist {
 
-    @Id
-    @GeneratedValue
     private Long id;
-
     private String title;
     private String album;
-    @Column(name = "year_of_song")
     private String year;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    private Artista artist;
+    private ArtistaDto artist;
 
 
 }
