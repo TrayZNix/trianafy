@@ -54,8 +54,9 @@ public class SongService {
     }
 
     public ResponseEntity<SongDtoOut> ValidateUpdate(SongDtoIn song, Long id){
-        if(repoSongs.existsById(id)){
-            Song inDbSong = repoSongs.findById(id).get();
+        Optional<Song> optSong = repoSongs.findById(id);
+        if(optSong.isPresent()){
+            Song inDbSong =optSong.get();
             //Validación
             if(song.getTitle() == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -63,7 +64,7 @@ public class SongService {
             else{
                 if(song.getArtistId() != null){
                     Optional<Artista> artista = repoArtista.findById(song.getArtistId());
-                    if(!artista.isEmpty()){
+                    if(artista.isPresent()){
                         inDbSong.setArtist(artista.get());
                     }
                     else{

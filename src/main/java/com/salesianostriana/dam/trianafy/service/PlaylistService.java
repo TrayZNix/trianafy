@@ -51,18 +51,16 @@ public class PlaylistService {
 
 
     public ResponseEntity<PlaylistDtoOut> validateUpdate(Long id, PlaylistDtoIn playlist) {
-        if(repoPlaylist.existsById(id)){
-            Playlist inDbPlaylist = repoPlaylist.findById(id).get();
-            //Validación
-
-                if(playlist.getName() != null){
-                    inDbPlaylist.setName(playlist.getName());
-                }
-                if(playlist.getDescription() != null){
-                    inDbPlaylist.setDescription(playlist.getDescription());
-                }
-                return ResponseEntity.status(HttpStatus.OK).body(mapper.toPlaylistDtoOut(repoPlaylist.save(inDbPlaylist)));
-
+        Optional<Playlist> optPlalist = repoPlaylist.findById(id);
+        if(optPlalist.isPresent()) {
+            Playlist inDbPlaylist = optPlalist.get();
+            if(playlist.getName() != null){
+                inDbPlaylist.setName(playlist.getName());
+            }
+            if(playlist.getDescription() != null){
+                inDbPlaylist.setDescription(playlist.getDescription());
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(mapper.toPlaylistDtoOut(repoPlaylist.save(inDbPlaylist)));
         }
         else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -70,13 +68,15 @@ public class PlaylistService {
     }
 
     public ResponseEntity<Playlist> validateAndAdd(Long id1, Long id2) {
-        if(!repoSongs.existsById(id2)){
+        Optional<Song> optSong = repoSongs.findById(id2);
+        if(optSong.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         else{
-            if(repoPlaylist.existsById(id1)){
-                Song s = repoSongs.findById(id2).get();
-                Playlist p = repoPlaylist.findById(id1).get();
+            Optional<Playlist> optPlaylist = repoPlaylist.findById(id1);
+            if(optPlaylist.isPresent()){
+                Song s = optSong.get();
+                Playlist p = optPlaylist.get();
                 p.addSong(s);
                 return ResponseEntity.status(HttpStatus.CREATED).body(repoPlaylist.save(p));
             }
@@ -89,15 +89,13 @@ public class PlaylistService {
         //TODO CHECKEAR SI ES NECESARIO COMPROBAR SI LA CANCION EXISTE
         Optional<Playlist> optPlaylist = repoPlaylist.findById(id1);
         Optional<Song> optSong = repoSongs.findById(id2);
-        if(optSong.isEmpty() || optPlaylist.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        else{
+        if (optSong.isPresent() && optPlaylist.isPresent()) {
             Playlist p = optPlaylist.get();
             Song s = optSong.get();
             List<Song> songs = p.getSongs();
             p.deleteSong(s);
-            return ResponseEntity.status(HttpStatus.CREATED).body(repoPlaylist.save(p));
+            repoPlaylist.save(p);
         }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

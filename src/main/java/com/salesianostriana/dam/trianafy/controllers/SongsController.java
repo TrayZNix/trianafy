@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,12 +63,19 @@ public class SongsController {
         if(song.getArtistId() == null || song.getTitle() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(songMapper
-                        .toSongOut(repoSongs
-                        .save(songMapper.toSongIn(song))));
+        else {
+            Song s = songMapper.toSongIn(song);
+            if(s == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            else{
+                return ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .body(songMapper
+                                .toSongOut(repoSongs
+                                .save(s)));
+            }
+        }
     }
     @PutMapping("/{id}")
     public ResponseEntity<SongDtoOut> updateSong(@RequestBody SongDtoIn song, @PathVariable Long id){
