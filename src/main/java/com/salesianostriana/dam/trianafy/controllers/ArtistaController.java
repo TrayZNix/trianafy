@@ -34,11 +34,17 @@ public class ArtistaController {
 
     @PostMapping()
     public ResponseEntity<Artista> createArtista(@RequestBody Artista artista){
+        if(artista.getName() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(repoArtist.save(artista));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Artista> editArtista(@RequestBody Artista artista, @PathVariable Long id){
+        if(artista.getName()==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         if(!repoArtist.existsById(id)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
