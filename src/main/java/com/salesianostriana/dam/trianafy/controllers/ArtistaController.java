@@ -22,7 +22,9 @@ public class ArtistaController {
     private SongRepository repoSongs;
     @GetMapping()
     public ResponseEntity<List<Artista>> getAllArtistas(){
-        return ResponseEntity.ok(repoArtist.findAll());
+        List<Artista> artistas = repoArtist.findAll();
+        if (artistas.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        else return ResponseEntity.ok(artistas);
     }
 
     @GetMapping("/{id}")
@@ -52,8 +54,10 @@ public class ArtistaController {
         if(repoArtist.existsById(id)){
             List<Song> canciones = repoSongs.findAll();
             canciones.forEach(song -> {
-                if(song.getArtista().getId().equals(id)){
-                song.setArtista(null);
+                if(song.getArtista()!=null){
+                    if(song.getArtista().getId().equals(id)){
+                        song.setArtista(null);
+                    }
                 }
             });
             repoSongs.saveAll(canciones);
