@@ -51,7 +51,10 @@ public class PlaylistController {
 
     @PostMapping()
     public ResponseEntity<PlaylistDtoOutPCreate> createPlaylist(@RequestBody PlaylistDtoIn playlist){
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapperPlaylist.toPlaylistDtoOutPostCreate(repoPlaylist.save(mapperPlaylist.toPlaylist(playlist))));
+        if(playlist.getName() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        else return ResponseEntity.status(HttpStatus.CREATED).body(mapperPlaylist.toPlaylistDtoOutPostCreate(repoPlaylist.save(mapperPlaylist.toPlaylist(playlist))));
     }
 
     @PutMapping("/{id}")

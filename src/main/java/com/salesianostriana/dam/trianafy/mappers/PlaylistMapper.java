@@ -22,7 +22,7 @@ public class PlaylistMapper {
     }
 
     public PlaylistDtoOut toPlaylistDtoOut(Playlist playlist){
-        return PlaylistDtoOut.builder().id(playlist.getId()).name(playlist.getName()).build();
+        return PlaylistDtoOut.builder().id(playlist.getId()).name(playlist.getName()).numberOfSongs(playlist.getSongs().size()).build();
     }
 
     public Playlist toPlaylist(PlaylistDtoIn playlistDto){
