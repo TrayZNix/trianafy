@@ -84,27 +84,20 @@ public class SongsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSong(@PathVariable Long id){
         //TODO FIX DELETE SONG
-        //ds
-//  s      if(repoSongs.existsById(id)){
-//            List<Playlist> playlists = repoPlaylist.findAll();
-//            playlists.forEach(playlist -> {
-//                List<Song> cancionesPlaylist = playlist.getSongs();
-//                cancionesPlaylist.stream().filter(canciones -> canciones.getId().equals(id)).forEach(c -> {
-//
-//                });
-//            });
-//            repoPlaylist.saveAll(playlists);
-//        }
+        Optional<Song> optSong = repoSongs.findById(id);
+        if(optSong.isPresent()){
+            Song s = optSong.get();
+            List<Playlist> listaPlaylists = repoPlaylist.findAll();
+            listaPlaylists.forEach(lista -> {
+                List<Song> cancionesPlaylist = lista.getSongs();
+                while (cancionesPlaylist.contains(s)){
+                    cancionesPlaylist.remove(s);
+                }
+                lista.setSongs(cancionesPlaylist);
+            });
+            repoPlaylist.saveAll(listaPlaylists);
+            repoSongs.deleteById(id);
+        }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-    //    List<Song> canciones = repoSongs.findAll();
-    //            canciones.forEach(song -> {
-    //        if(song.getArtista()!=null){
-    //            if(song.getArtista().getId().equals(id)){
-    //                song.setArtista(null);
-    //            }
-    //        }
-    //    });
-    //            repoSongs.saveAll(canciones);
-    //            repoArtist.deleteById(id);
 }
