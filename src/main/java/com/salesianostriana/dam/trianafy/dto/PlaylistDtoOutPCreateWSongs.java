@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Id;
 import java.util.List;
 
+/**
+  Esta clase se usará para devolver una playlist. Se diferencia del DTO "PlaylistDtoOutPCreate.class" en que este dto
+  si devuelve las canciones de la playlist
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

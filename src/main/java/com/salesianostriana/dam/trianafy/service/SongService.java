@@ -19,14 +19,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class SongService {
-
     @Autowired
-    private ArtistRepository repoArtista;
-    @Autowired
-    private SongRepository repoSongs;
+    private ArtistService artistService;
     @Autowired
     private SongMapper songMapper;
-
     private final SongRepository repository;
 
     public Song add(Song song) {
@@ -54,32 +50,26 @@ public class SongService {
     }
 
     public ResponseEntity<SongDtoOut> ValidateUpdate(SongDtoIn song, Long id){
-        Optional<Song> optSong = repoSongs.findById(id);
+        Optional<Song> optSong = findById(id);
         if(optSong.isPresent()){
-            Song inDbSong =optSong.get();
+            Song inDbSong = optSong.get();
             //Validación
-            if(song.getTitle() == null){
+            if(song.getTitle() == null || song.getYear() == null || song.getAlbum() == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
             else{
                 if(song.getArtistId() != null){
-                    Optional<Artista> artista = repoArtista.findById(song.getArtistId());
-                    if(artista.isPresent()){
-                        inDbSong.setArtist(artista.get());
-                    }
-                    else{
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-                    }
+                    Optional<Artista> artista = artistService.findById(song.getArtistId());
+                    artista.ifPresent(inDbSong::setArtist);
                 }
-                if(song.getYear() != null){
-                    inDbSong.setYear(song.getYear());
+                else{
+                    inDbSong.setArtist(null);
                 }
-                if(song.getAlbum() != null){
-                    inDbSong.setAlbum(song.getAlbum());
-                }
+                inDbSong.setYear(song.getYear());
+                inDbSong.setAlbum(song.getAlbum());
                 inDbSong.setTitle(song.getTitle());
 
-                return ResponseEntity.status(HttpStatus.OK).body(songMapper.toSongOut(repoSongs.save(inDbSong)));
+                return ResponseEntity.status(HttpStatus.OK).body(songMapper.toSongOut(add(inDbSong)));
             }
         }
         else{
