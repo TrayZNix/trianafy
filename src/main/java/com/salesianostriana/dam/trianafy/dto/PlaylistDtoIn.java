@@ -17,5 +17,6 @@ import javax.validation.constraints.NotNull;
 public class PlaylistDtoIn {
     @NotNull
     private String name;
+    @NotNull
     private String description;
 }

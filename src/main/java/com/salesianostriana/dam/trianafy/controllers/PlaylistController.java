@@ -71,7 +71,12 @@ public class PlaylistController {
     })
     @GetMapping()
     public ResponseEntity<List<PlaylistDtoOut>> getPlaylists(){
-        return ResponseEntity.ok(mapperPlaylist.toPlaylistListDtoOut(playlistService.findAll()));
+        List<Playlist> playlists = playlistService.findAll();
+        if(playlists.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        else return ResponseEntity.ok(mapperPlaylist.toPlaylistListDtoOut(playlists));
+
     }
 
     @Operation(summary = "Devuelve una playlist según el id proporcionado")
@@ -145,6 +150,7 @@ public class PlaylistController {
                             examples = {@ExampleObject(
                                     value = """
                                    {
+                                      "id": 1,
                                       "name": "Drill",
                                       "description": "Drill británico"
                                    }
@@ -197,7 +203,10 @@ public class PlaylistController {
     @PutMapping("/{idPlaylist}")
     public ResponseEntity<PlaylistDtoOut> editPlaylist(@Parameter(description = "Id de la playlist a editar") @PathVariable Long idPlaylist,
                                                        @RequestBody PlaylistDtoIn playlist){
-        return servicePlaylist.validateUpdate(idPlaylist, playlist);
+        if(playlist.getName() == null || playlist.getDescription() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        else return servicePlaylist.validateUpdate(idPlaylist, playlist);
     }
 
     @Operation(summary = "Elimina una playlist según el id")
@@ -233,20 +242,14 @@ public class PlaylistController {
                                                            "title": "Blood Rage",
                                                            "album": "Beware of the Humans",
                                                            "year": "2017",
-                                                           "artist": {
-                                                                        "id": 1,
-                                                                        "name": "Nightcrawler"
-                                                                     }
+                                                           "artist": "Nightcrawler"
                                                          },
                                                          {
                                                            "id": 2,
                                                            "title": "Aleph",
                                                            "album": "Maryland",
                                                            "year": "2011",
-                                                           "artist": {
-                                                                        "id": 2,
-                                                                        "name": "Gesaffelstein"
-                                                                     }
+                                                           "artist": "Gesaffelstein"
                                                          }
                                                        ]
                                                      }
@@ -270,14 +273,14 @@ public class PlaylistController {
                             examples = {@ExampleObject(
                                     value = """
                                    {
-                                   "id": 1,
-                                   "title": "Jeremías 17-5",
-                                   "album": "Muerte",
-                                   "year": "2012"
-                                   , "artist": {
-                                                "id": 1,
-                                                "name": "Canserbero"
-                                                }
+                                       "id": 1,
+                                       "title": "Jeremías 17-5",
+                                       "album": "Muerte",
+                                       "year": "2012"
+                                       , "artist": {
+                                                    "id": 1,
+                                                    "name": "Canserbero"
+                                                    }
                                    }
                                    """
                             )})}),
@@ -307,7 +310,7 @@ public class PlaylistController {
             @ApiResponse(responseCode = "200",
                     description = "Se encontró la canción correctamente",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Playlist.class),
+                            schema = @Schema(implementation = PlaylistDtoOutPCreateWSongs.class),
                             examples = {@ExampleObject(
                                     value = """
                                    {
@@ -319,29 +322,28 @@ public class PlaylistController {
                                                "id": 1,
                                                "title": "Jeremías 17-5",
                                                "album": "Muerte",
-                                               "year": "2012"
-                                               , "artist": {
-                                                            "id": 1,
-                                                            "name": "Canserbero"
-                                                            }
+                                               "year": "2012",
+                                               "artist": "Canserbero"
                                                }
                                            ]
                                    }
                                    """
                             )})}),
-            @ApiResponse(responseCode = "400",
+            @ApiResponse(responseCode = "404",
                     description = "No se encontró la canción o playlist indicada",
                     content = {@Content})
     })
     @PostMapping("/{idPlaylist}/song/{idCancion}")
-    public ResponseEntity<Playlist> addSongToPlaylist(@Parameter(description = "Id de la playlist donde añadir la canción") @PathVariable Long idPlaylist,@Parameter(description = "Id de la canción a añadir") @PathVariable Long idCancion){
+    public ResponseEntity<PlaylistDtoOutPCreateWSongs> addSongToPlaylist(@Parameter(description = "Id de la playlist donde añadir la canción") @PathVariable Long idPlaylist,@Parameter(description = "Id de la canción a añadir") @PathVariable Long idCancion){
         return servicePlaylist.validateAndAdd(idPlaylist, idCancion);
     }
 
     @Operation(summary = "Elimina una de todas las canción de id indicado, en la playlist indicada en el primer id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",
-                    description = "Se eliminó la canción correctamente", content = @Content())})
+                    description = "Se eliminó la canción correctamente", content = @Content()),
+            @ApiResponse(responseCode = "404",
+                    description = "No se encontró la lista en la que borrar la canción", content = @Content())})
     @DeleteMapping("/{idPlaylist}/song/{idCancion}")
     public ResponseEntity<Playlist> deleteSongFromPlaylist(@Parameter(description = "Id de la playlist donde eliminar la canción") @PathVariable Long idPlaylist, @Parameter(description = "Id de la canción a borrar") @PathVariable Long idCancion){
         return servicePlaylist.validateAndRemove(idPlaylist, idCancion);

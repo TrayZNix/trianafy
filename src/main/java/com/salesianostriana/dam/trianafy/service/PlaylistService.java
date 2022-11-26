@@ -3,6 +3,7 @@ package com.salesianostriana.dam.trianafy.service;
 
 import com.salesianostriana.dam.trianafy.dto.PlaylistDtoIn;
 import com.salesianostriana.dam.trianafy.dto.PlaylistDtoOut;
+import com.salesianostriana.dam.trianafy.dto.PlaylistDtoOutPCreateWSongs;
 import com.salesianostriana.dam.trianafy.mappers.PlaylistMapper;
 import com.salesianostriana.dam.trianafy.model.*;
 import com.salesianostriana.dam.trianafy.repos.PlaylistRepository;
@@ -67,10 +68,10 @@ public class PlaylistService {
         }
     }
 
-    public ResponseEntity<Playlist> validateAndAdd(Long id1, Long id2) {
+    public ResponseEntity<PlaylistDtoOutPCreateWSongs> validateAndAdd(Long id1, Long id2) {
         Optional<Song> optSong = repoSongs.findById(id2);
         if(optSong.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         else{
             Optional<Playlist> optPlaylist = repoPlaylist.findById(id1);
@@ -78,10 +79,10 @@ public class PlaylistService {
                 Song s = optSong.get();
                 Playlist p = optPlaylist.get();
                 p.addSong(s);
-                return ResponseEntity.status(HttpStatus.CREATED).body(repoPlaylist.save(p));
+                return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toPlaylistDtoOutPCreateWSongs(repoPlaylist.save(p)));
             }
             else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         }
     }
@@ -89,13 +90,18 @@ public class PlaylistService {
         //TODO CHECKEAR SI ES NECESARIO COMPROBAR SI LA CANCION EXISTE
         Optional<Playlist> optPlaylist = repoPlaylist.findById(id1);
         Optional<Song> optSong = repoSongs.findById(id2);
-        if (optSong.isPresent() && optPlaylist.isPresent()) {
-            Playlist p = optPlaylist.get();
-            Song s = optSong.get();
-            List<Song> songs = p.getSongs();
-            p.deleteSong(s);
-            repoPlaylist.save(p);
+        if (optPlaylist.isPresent()){
+            if (optSong.isPresent()) {
+                Playlist p = optPlaylist.get();
+                Song s = optSong.get();
+                List<Song> songs = p.getSongs();
+                p.deleteSong(s);
+                repoPlaylist.save(p);
+            }
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

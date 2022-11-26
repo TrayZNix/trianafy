@@ -102,9 +102,6 @@ public class SongController {
                                    }
                                    """
                             )})}),
-            @ApiResponse(responseCode = "400",
-                    description = "Falta algún parámetro o el tipo de uno o más parámetros no es correcto",
-                    content = {@Content}),
             @ApiResponse(responseCode = "404",
                     description = "No se encontró ningún artista con el id proporcionado",
                     content = {@Content})
