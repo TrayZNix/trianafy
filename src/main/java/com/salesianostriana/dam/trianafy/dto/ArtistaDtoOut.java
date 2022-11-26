@@ -8,13 +8,15 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Esta clase se usará para devolver un artista, cambiando el nombre del atributo nombre de un artista
+ * a simplemente "artista": "nombreArtista"
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
 public class ArtistaDtoOut {
-    @Hidden()
     private Long id;
-    @NotNull
     private String artist;
 }

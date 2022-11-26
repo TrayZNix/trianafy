@@ -18,10 +18,10 @@ import javax.validation.constraints.NotNull;
 @Data
 @Builder
 public class Artista {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
     private String name;
 
 }

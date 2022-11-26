@@ -1,7 +1,9 @@
 package com.salesianostriana.dam.trianafy.dto;
 
 import lombok.*;
-
+/**
+ Esta clase se usará para devolver la canción, devolviendo el artista como un string de su nombre
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

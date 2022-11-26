@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ Esta clase se usará para registrar un artista
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

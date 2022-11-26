@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
 
-
+/**
+ Esta clase se usará para devolver los datos de una playlist
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

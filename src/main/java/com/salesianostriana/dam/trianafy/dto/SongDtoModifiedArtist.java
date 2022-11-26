@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/**
+ Esta clase se usará para devolver la canción con el artista como objeto, y no como un String del nombre del artista.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

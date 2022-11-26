@@ -14,14 +14,18 @@ public class OpenApiDoc {
     public OpenAPI getOpenAPI(){
         return new OpenAPI()
                 .components(new Components())
-                .info(new Info().contact(new Contact()
+                .info(new Info()
+                        .version("1.0")
+                        .contact(new Contact()
                         .name("Roberto Carvajal Velasco")
                         .email("carvajal.verob22@triana.salesianos.edu")
                         .url("https://www.github.com/TrayzNix"))
+                        .license(new License().name("MIT License").url("https://github.com/TrayZNix/trianafy/blame/main/LICENSE"))
                         .title("Trianafy")
                         .description("API de una aplicación de música similar a Spotify, en la que " +
                                 "podemos realizar peticiones CRUD a artistas, canciones y playlist, " +
                                 "estando estos datos conectados entre si,"));
 
     }
+
 }
