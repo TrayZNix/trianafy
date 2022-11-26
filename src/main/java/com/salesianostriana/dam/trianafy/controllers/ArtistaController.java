@@ -137,7 +137,7 @@ public class ArtistaController {
                     content = {@Content})
     })
     @PutMapping("/{idArtista}")
-    public ResponseEntity<Artista> editArtista(@RequestBody Artista artista, @Parameter(description = "Id del artista a editar")@PathVariable Long idArtista){
+    public ResponseEntity<Artista> editArtista(@RequestBody ArtistaDtoIn artista, @Parameter(description = "Id del artista a editar")@PathVariable Long idArtista){
         if(artista.getName()==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
