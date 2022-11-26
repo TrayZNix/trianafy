@@ -307,18 +307,25 @@ public class PlaylistController {
             @ApiResponse(responseCode = "200",
                     description = "Se encontró la canción correctamente",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = SongDtoModifiedArtist.class),
+                            schema = @Schema(implementation = Playlist.class),
                             examples = {@ExampleObject(
                                     value = """
                                    {
                                    "id": 1,
-                                   "title": "Jeremías 17-5",
-                                   "album": "Muerte",
-                                   "year": "2012"
-                                   , "artist": {
-                                                "id": 1,
-                                                "name": "Canserbero"
-                                                }
+                                   "name": "Lista para entrenar",
+                                   "description": "Lista para ponerte fuerte",
+                                   "songs": [
+                                               {
+                                               "id": 1,
+                                               "title": "Jeremías 17-5",
+                                               "album": "Muerte",
+                                               "year": "2012"
+                                               , "artist": {
+                                                            "id": 1,
+                                                            "name": "Canserbero"
+                                                            }
+                                               }
+                                           ]
                                    }
                                    """
                             )})}),
