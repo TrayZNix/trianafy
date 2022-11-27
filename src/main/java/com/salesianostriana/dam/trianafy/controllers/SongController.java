@@ -156,7 +156,7 @@ public class SongController {
     @PostMapping()
     public ResponseEntity<SongDtoOut> createSong(@RequestBody SongDtoIn song){
         //TODO preguntar si validar asi los datos es correcto
-        if(song.getArtistId() == null || song.getTitle() == null){
+        if(song.getTitle() == null || song.getYear() == null || song.getAlbum() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         else {
