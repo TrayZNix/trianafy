@@ -17,15 +17,19 @@ public class SongMapper {
     private ArtistRepository repoArtist;
     @Autowired
     private ArtistaMapper mapperArtista;
-
     public Song toSongIn(SongDtoIn dtoSong){
-        Optional<Artista> artista = repoArtist.findById(dtoSong.getArtistId());
-        if(artista.isEmpty()){
-            return null;
+        if(dtoSong.getArtistId() == null){
+            return Song.builder().title(dtoSong.getTitle()).album(dtoSong.getAlbum()).year(dtoSong.getYear()).build();
         }
         else{
-            Artista artistaObj = artista.get();
-            return Song.builder().title(dtoSong.getTitle()).album(dtoSong.getAlbum()).year(dtoSong.getYear()).artist(artistaObj).build();
+            Optional<Artista> artista = repoArtist.findById(dtoSong.getArtistId());
+            if(artista.isPresent()){
+                Artista artistaObj = artista.get();
+                return Song.builder().title(dtoSong.getTitle()).album(dtoSong.getAlbum()).year(dtoSong.getYear()).artist(artistaObj).build();
+            }
+            else{
+                return  null;
+            }
         }
     }
     public SongDtoOut toSongOut(Song song){
