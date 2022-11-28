@@ -7,6 +7,7 @@ import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repos.ArtistRepository;
 import com.salesianostriana.dam.trianafy.repos.SongRepository;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
+import com.salesianostriana.dam.trianafy.service.SongService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.links.Link;
@@ -33,13 +34,12 @@ import java.util.List;
 @RequestMapping("/artist")
 public class ArtistaController {
     @Autowired
-    private ArtistRepository repoArtist;
-    @Autowired
-    private SongRepository repoSongs;
-    @Autowired
     private ArtistaMapper artistaMapper;
     @Autowired
     private ArtistService serviceArtista;
+    @Autowired
+    private SongService songService;
+
     @Operation(summary = "Devuelve una lista de todos los artistas")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
@@ -141,13 +141,13 @@ public class ArtistaController {
         if(artista.getName()==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        if(!repoArtist.existsById(idArtista)){
+        if(!serviceArtista.existsById(idArtista)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         else{
         return ResponseEntity.of(serviceArtista.findById(idArtista).map(preEdit -> {
             preEdit.setName(artista.getName());
-            return serviceArtista.add(preEdit);
+            return serviceArtista.edit(preEdit);
         }));
         }
     }
@@ -157,8 +157,8 @@ public class ArtistaController {
             content =  {@Content})
     @DeleteMapping("/{idArtista}")
     public ResponseEntity<?> deleteArtista(@Parameter(description = "Id del artista a borrar")@PathVariable Long idArtista){
-        if(repoArtist.existsById(idArtista)){
-            List<Song> canciones = repoSongs.findAll();
+        if(serviceArtista.existsById(idArtista)){
+            List<Song> canciones = songService.findAll();
             canciones.forEach(song -> {
                 if(song.getArtist()!=null){
                     if(song.getArtist().getId().equals(idArtista)){
@@ -166,7 +166,7 @@ public class ArtistaController {
                     }
                 }
             });
-            repoSongs.saveAll(canciones);
+            songService.addAll(canciones);
             serviceArtista.deleteById(idArtista);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

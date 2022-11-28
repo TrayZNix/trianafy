@@ -50,6 +50,8 @@ public class PlaylistService {
         repoPlaylist.deleteById(id);
     }
 
+    public Boolean existsById(Long id ) { return repoPlaylist.existsById(id); }
+
 
     public ResponseEntity<PlaylistDtoOut> validateUpdate(Long id, PlaylistDtoIn playlist) {
         Optional<Playlist> optPlalist = repoPlaylist.findById(id);

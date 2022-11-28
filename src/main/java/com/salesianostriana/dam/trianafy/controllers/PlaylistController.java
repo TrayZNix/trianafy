@@ -30,8 +30,7 @@ import java.util.Optional;
 @Tags(@Tag(name = "Playlist", description = "PlaylistController"))
 @RequestMapping("/list")
 public class PlaylistController {
-    @Autowired
-    private PlaylistRepository repoPlaylist;
+
     @Autowired
     private PlaylistService playlistService;
     @Autowired
@@ -216,7 +215,7 @@ public class PlaylistController {
 
     @DeleteMapping("/{idPlaylist}")
     public ResponseEntity<?> deletePlaylist(@Parameter(description = "Id de la playlist a eliminar") @PathVariable Long idPlaylist ){
-        if(repoPlaylist.existsById(idPlaylist)){
+        if(playlistService.existsById(idPlaylist)){
             playlistService.deleteById(idPlaylist);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -291,7 +290,7 @@ public class PlaylistController {
     @GetMapping("/{idPlaylist}/song/{idCancion}")
     public ResponseEntity<SongDtoModifiedArtist> getPlaylistSongData(@Parameter(description = "Id de la playlist donde buscar la canción") @PathVariable Long idPlaylist,
                                                                      @Parameter(description = "Id de la canción")@PathVariable Long idCancion){
-        if(repoPlaylist.existsById(idPlaylist)) {
+        if(servicePlaylist.existsById(idPlaylist)) {
             Optional<Song> s = songService.findById(idCancion);
             if (s.isPresent()) {
                 SongDtoModifiedArtist songToReturn = songMapper.toSongDtoModifiedArtist(s.get());

@@ -15,7 +15,6 @@ public class ArtistService {
 
     private final ArtistRepository repository;
 
-
     public Artista add(Artista artista) {
         return repository.save(artista);
     }
@@ -39,5 +38,7 @@ public class ArtistService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    public Boolean existsById(Long id ) { return repository.existsById(id); }
 
 }

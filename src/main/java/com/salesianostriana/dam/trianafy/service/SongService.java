@@ -49,6 +49,10 @@ public class SongService {
         repository.deleteById(id);
     }
 
+    public Boolean existsById(Long id ) { return repository.existsById(id); }
+
+    public List<Song> addAll(List<Song> list) { return repository.saveAll(list);}
+
     public ResponseEntity<SongDtoOut> ValidateUpdate(SongDtoIn song, Long id){
         Optional<Song> optSong = findById(id);
         if(optSong.isPresent()){
