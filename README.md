@@ -1,7 +1,13 @@
 
 
+
 # Trianafy
 **Trianafy** es una *API* usada para almacenar datos sobre música, siendo esto artistas, canciones y playlist
+## Metodología de trabajo
+Para trabajar de una manera eficiente, se ha decidido trabajar mediante historias de usuario. Estas se encuentran en el mismo reto.
+
+
+[![](https://raw.githubusercontent.com/TrayZNix/trianafy/main/historiasDeUsuario.png?token=GHSAT0AAAAAABZYGYZBDGB5MOCQJIJ4HQ7MY4EVSBQ)](https://github.com/TrayZNix/trianafy/blob/main/historiasDeUsuario.png)
 
 ## Requisitos
 Para la ejecución de este proyecto, es necesario tener instalado [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html), y [Apache Maven](https://maven.apache.org/download.cgi).
