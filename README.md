@@ -4,7 +4,7 @@
 # Trianafy
 **Trianafy** es una *API* usada para almacenar datos sobre música, siendo esto artistas, canciones y playlist
 ## Metodología de trabajo
-Para trabajar de una manera eficiente, se ha decidido trabajar mediante historias de usuario. Estas se encuentran en el mismo reto.
+Para trabajar de una manera eficiente, se ha decidido trabajar mediante historias de usuario. Estas se encuentran en el mismo repo.
 
 
 [![](https://raw.githubusercontent.com/TrayZNix/trianafy/main/historiasDeUsuario.png?token=GHSAT0AAAAAABZYGYZBDGB5MOCQJIJ4HQ7MY4EVSBQ)](https://github.com/TrayZNix/trianafy/blob/main/historiasDeUsuario.png)
