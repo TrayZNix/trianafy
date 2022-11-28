@@ -30,8 +30,7 @@ import java.util.Optional;
 @Tags(@Tag(name = "Playlist", description = "PlaylistController"))
 @RequestMapping("/list")
 public class PlaylistController {
-    @Autowired
-    private PlaylistRepository repoPlaylist;
+
     @Autowired
     private PlaylistService playlistService;
     @Autowired
@@ -206,7 +205,22 @@ public class PlaylistController {
         if(playlist.getName() == null || playlist.getDescription() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        else return servicePlaylist.validateUpdate(idPlaylist, playlist);
+        else{
+            Optional<Playlist> optPlaylist = servicePlaylist.findById(idPlaylist);
+            if(optPlaylist.isPresent()) {
+                Playlist inDbPlaylist = optPlaylist.get();
+                if(playlist.getName() != null){
+                    inDbPlaylist.setName(playlist.getName());
+                }
+                if(playlist.getDescription() != null){
+                    inDbPlaylist.setDescription(playlist.getDescription());
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(mapperPlaylist.toPlaylistDtoOut(servicePlaylist.edit(inDbPlaylist)));
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        }
     }
 
     @Operation(summary = "Elimina una playlist según el id")
@@ -216,7 +230,7 @@ public class PlaylistController {
 
     @DeleteMapping("/{idPlaylist}")
     public ResponseEntity<?> deletePlaylist(@Parameter(description = "Id de la playlist a eliminar") @PathVariable Long idPlaylist ){
-        if(repoPlaylist.existsById(idPlaylist)){
+        if(playlistService.existsById(idPlaylist)){
             playlistService.deleteById(idPlaylist);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -291,7 +305,7 @@ public class PlaylistController {
     @GetMapping("/{idPlaylist}/song/{idCancion}")
     public ResponseEntity<SongDtoModifiedArtist> getPlaylistSongData(@Parameter(description = "Id de la playlist donde buscar la canción") @PathVariable Long idPlaylist,
                                                                      @Parameter(description = "Id de la canción")@PathVariable Long idCancion){
-        if(repoPlaylist.existsById(idPlaylist)) {
+        if(servicePlaylist.existsById(idPlaylist)) {
             Optional<Song> s = songService.findById(idCancion);
             if (s.isPresent()) {
                 SongDtoModifiedArtist songToReturn = songMapper.toSongDtoModifiedArtist(s.get());
@@ -335,7 +349,22 @@ public class PlaylistController {
     })
     @PostMapping("/{idPlaylist}/song/{idCancion}")
     public ResponseEntity<PlaylistDtoOutPCreateWSongs> addSongToPlaylist(@Parameter(description = "Id de la playlist donde añadir la canción") @PathVariable Long idPlaylist,@Parameter(description = "Id de la canción a añadir") @PathVariable Long idCancion){
-        return servicePlaylist.validateAndAdd(idPlaylist, idCancion);
+        Optional<Song> optSong = songService.findById(idCancion);
+        if(optSong.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        else{
+            Optional<Playlist> optPlaylist = playlistService.findById(idPlaylist);
+            if(optPlaylist.isPresent()){
+                Song s = optSong.get();
+                Playlist p = optPlaylist.get();
+                p.addSong(s);
+                return ResponseEntity.status(HttpStatus.CREATED).body(mapperPlaylist.toPlaylistDtoOutPCreateWSongs(servicePlaylist.add(p)));
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        }
     }
 
     @Operation(summary = "Elimina una de todas las canción de id indicado, en la playlist indicada en el primer id")
@@ -346,7 +375,28 @@ public class PlaylistController {
                     description = "No se encontró la lista en la que borrar la canción", content = @Content())})
     @DeleteMapping("/{idPlaylist}/song/{idCancion}")
     public ResponseEntity<Playlist> deleteSongFromPlaylist(@Parameter(description = "Id de la playlist donde eliminar la canción") @PathVariable Long idPlaylist, @Parameter(description = "Id de la canción a borrar") @PathVariable Long idCancion){
-        return servicePlaylist.validateAndRemove(idPlaylist, idCancion);
+        Optional<Playlist> optPlaylist = servicePlaylist.findById(idPlaylist);
+        Optional<Song> optSong = songService.findById(idCancion);
+        if (optPlaylist.isPresent()){
+            if (optSong.isPresent()) {
+                Playlist p = optPlaylist.get();
+                Song s = optSong.get();
+                List<Song> songs = p.getSongs();
+                while(songs.contains(s)){
+                    p.deleteSong(s);
+                }
+                servicePlaylist.edit(p);
+            }
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+
+
+
+
     }
 
 }

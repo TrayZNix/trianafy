@@ -49,31 +49,9 @@ public class SongService {
         repository.deleteById(id);
     }
 
-    public ResponseEntity<SongDtoOut> ValidateUpdate(SongDtoIn song, Long id){
-        Optional<Song> optSong = findById(id);
-        if(optSong.isPresent()){
-            Song inDbSong = optSong.get();
-            //Validación
-            if(song.getTitle() == null || song.getYear() == null || song.getAlbum() == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
-            else{
-                if(song.getArtistId() != null){
-                    Optional<Artista> artista = artistService.findById(song.getArtistId());
-                    artista.ifPresent(inDbSong::setArtist);
-                }
-                else{
-                    inDbSong.setArtist(null);
-                }
-                inDbSong.setYear(song.getYear());
-                inDbSong.setAlbum(song.getAlbum());
-                inDbSong.setTitle(song.getTitle());
+    public Boolean existsById(Long id ) { return repository.existsById(id); }
 
-                return ResponseEntity.status(HttpStatus.OK).body(songMapper.toSongOut(add(inDbSong)));
-            }
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
+    public List<Song> editAll(List<Song> list) { return repository.saveAll(list);}
+
+
 }
