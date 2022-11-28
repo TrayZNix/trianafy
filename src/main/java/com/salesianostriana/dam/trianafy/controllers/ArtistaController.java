@@ -166,7 +166,7 @@ public class ArtistaController {
                     }
                 }
             });
-            songService.addAll(canciones);
+            songService.editAll(canciones);
             serviceArtista.deleteById(idArtista);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

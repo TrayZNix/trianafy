@@ -42,6 +42,8 @@ public class SongController {
     private SongService songService;
     @Autowired
     private PlaylistService playlistService;
+    @Autowired
+    private ArtistService artistService;
 
     @Operation(summary = "Devuelve todas las canciones guardadas en la base de datos")
     @ApiResponses(value = {
@@ -209,7 +211,31 @@ public class SongController {
     })
     @PutMapping("/{idCancion}")
     public ResponseEntity<SongDtoOut> updateSong(@RequestBody SongDtoIn song, @Parameter(description = "Id de la canción a editar") @PathVariable Long idCancion){
-        return songService.ValidateUpdate(song, idCancion);
+        Optional<Song> optSong = songService.findById(idCancion);
+        if(optSong.isPresent()){
+            Song inDbSong = optSong.get();
+            //Validación
+            if(song.getTitle() == null || song.getYear() == null || song.getAlbum() == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            else{
+                if(song.getArtistId() != null){
+                    Optional<Artista> artista = artistService.findById(song.getArtistId());
+                    artista.ifPresent(inDbSong::setArtist);
+                }
+                else{
+                    inDbSong.setArtist(null);
+                }
+                inDbSong.setYear(song.getYear());
+                inDbSong.setAlbum(song.getAlbum());
+                inDbSong.setTitle(song.getTitle());
+
+                return ResponseEntity.status(HttpStatus.OK).body(songMapper.toSongOut(songService.add(inDbSong)));
+            }
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
     @Operation(summary = "Elimina una canción según el id")
     @ApiResponse(responseCode = "204",
