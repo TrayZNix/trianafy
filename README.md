@@ -1,4 +1,5 @@
 
+
 # Trianafy
 **Trianafy** es una *API* usada para almacenar datos sobre música, siendo esto artistas, canciones y playlist
 
@@ -128,10 +129,5 @@ Por otro lado, también es posible acceder al JSON que contiene toda la document
 >⠀
 
 >#### Borrado de una canción en una playlist
->Al borrar ejecutar n la petición *DELETE* en la URL `localhost:8080/list/{idPlaylist}/song/{idSong}`, se borrará únicamente la entrada más antigua en esta en la playlist. 
-> ##### ¿Por qué se ha decidido esto?
-> Imaginemos que tienes una playlist con las canciones que más te gustan. Tienes cuatro veces guardada la canción *"Despacito"*, pero la almacenas una quinta vez, y tener cinco veces en tu playlist *"Despacito"* es demasiado para tu salud mental, por ello, decides borrar esta ultima canción, pero al ejecutar la petición, se borran el resto de *"Despacito"* de tu playlist, en otras palabras... ¡Tendrias que meter las otras 4 de nuevo!
-> Menudo engorro... ¿No?
-> ##### ¿Y si quiero borrar todas las entradas de una canción?
-> Si ya te has hartado de *"Despacito"* y quieres eliminarla completamente de tu playlist,  solo debes hacer en tu cliente una función en la que recojas las canciones de tu playlist, para contar cuantas veces aparece *"Despacito"* y realizar la petición *DELETE* en la URL `localhost:8080/list/{idPlaylist}/song/{idSong}` el número de veces que encuentres la canción.
+>Al  eliminar una canción de una playlist ejecutando la peticion *DELETE* en la URL `localhost:8080/list/{idPlaylist}/song/{idSong}` se eliminarán todas las entradas de esa canción en esa playlist	 
 >⠀
