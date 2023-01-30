@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.trianafy.controllers;
 
 import com.salesianostriana.dam.trianafy.dto.*;
+import com.salesianostriana.dam.trianafy.exception.EmptyPlaylistListException;
 import com.salesianostriana.dam.trianafy.mappers.PlaylistMapper;
 import com.salesianostriana.dam.trianafy.mappers.SongMapper;
 import com.salesianostriana.dam.trianafy.model.*;
@@ -70,12 +71,7 @@ public class PlaylistController {
     })
     @GetMapping()
     public ResponseEntity<List<PlaylistDtoOut>> getPlaylists(){
-        List<Playlist> playlists = playlistService.findAll();
-        if(playlists.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        else return ResponseEntity.ok(mapperPlaylist.toPlaylistListDtoOut(playlists));
-
+        return servicePlaylist.findAllPlaylists();
     }
 
     @Operation(summary = "Devuelve una playlist según el id proporcionado")
@@ -115,16 +111,7 @@ public class PlaylistController {
     })
     @GetMapping("/{idPlaylist}")
     public ResponseEntity<PlaylistDtoOutPCreateWSongs> getListaConcreta(@Parameter(description = "Id de la playlist a buscar") @PathVariable Long idPlaylist){
-        Optional<Playlist> optPlaylist = playlistService.findById(idPlaylist);
-        return optPlaylist
-                .map(playlist -> ResponseEntity
-                        .status(HttpStatus.OK)
-                        .body(mapperPlaylist.toPlaylistDtoOutPCreateWSongs(playlist)))
-                .orElseGet(() ->
-                        ResponseEntity
-                                .status(HttpStatus.NOT_FOUND)
-                                .build());
-
+        return servicePlaylist.findPlaylistById(idPlaylist);
     }
 
     @Operation(summary = "Crea una playlist según el cuerpo proporcionado")

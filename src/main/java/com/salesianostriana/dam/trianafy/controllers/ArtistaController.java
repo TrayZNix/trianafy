@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.trianafy.controllers;
 
 import com.salesianostriana.dam.trianafy.dto.ArtistaDtoIn;
+import com.salesianostriana.dam.trianafy.dto.ArtistaDtoOut;
+import com.salesianostriana.dam.trianafy.exception.ArtistNotFoundException;
 import com.salesianostriana.dam.trianafy.mappers.ArtistaMapper;
 import com.salesianostriana.dam.trianafy.model.Artista;
 import com.salesianostriana.dam.trianafy.model.Song;
@@ -60,9 +62,7 @@ public class ArtistaController {
     })
     @GetMapping()
     public ResponseEntity<List<Artista>> getAllArtistas(){
-        List<Artista> artistas = serviceArtista.findAll();
-        if (artistas.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        else return ResponseEntity.ok(artistas);
+        return serviceArtista.findAll();
     }
     @Operation(summary = "Devuelve una artistas según su id")
     @ApiResponses(value = {
@@ -81,7 +81,7 @@ public class ArtistaController {
     })
     @GetMapping("/{idArtista}")
     public ResponseEntity<Artista> getArtista(@Parameter(description = "Id del artista a buscar") @PathVariable Long idArtista){
-        return ResponseEntity.of(serviceArtista.findById(idArtista));
+        return ResponseEntity.status(HttpStatus.OK).body(serviceArtista.findById(idArtista));
     }
     @Operation(summary = "Crea un artista nuevo segun el cuerpo proporcionado")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Datos del artista a crear",
@@ -137,19 +137,8 @@ public class ArtistaController {
                     content = {@Content})
     })
     @PutMapping("/{idArtista}")
-    public ResponseEntity<Artista> editArtista(@RequestBody ArtistaDtoIn artista, @Parameter(description = "Id del artista a editar")@PathVariable Long idArtista){
-        if(artista.getName()==null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        if(!serviceArtista.existsById(idArtista)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        else{
-        return ResponseEntity.of(serviceArtista.findById(idArtista).map(preEdit -> {
-            preEdit.setName(artista.getName());
-            return serviceArtista.edit(preEdit);
-        }));
-        }
+    public ResponseEntity<ArtistaDtoOut> editArtista(@RequestBody ArtistaDtoIn artista, @Parameter(description = "Id del artista a editar")@PathVariable Long idArtista){
+        return serviceArtista.editArtist(artista, idArtista);
     }
     @Operation(summary = "Elimina un artista según el id")
     @ApiResponse(responseCode = "204",

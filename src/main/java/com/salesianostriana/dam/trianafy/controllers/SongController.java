@@ -4,6 +4,7 @@ import com.salesianostriana.dam.trianafy.dto.ArtistaDtoIn;
 import com.salesianostriana.dam.trianafy.dto.SongDtoIn;
 import com.salesianostriana.dam.trianafy.dto.SongDtoModifiedArtist;
 import com.salesianostriana.dam.trianafy.dto.SongDtoOut;
+import com.salesianostriana.dam.trianafy.exception.SongNotFoundException;
 import com.salesianostriana.dam.trianafy.mappers.ArtistaMapper;
 import com.salesianostriana.dam.trianafy.mappers.SongMapper;
 import com.salesianostriana.dam.trianafy.model.*;
@@ -116,7 +117,7 @@ public class SongController {
         return ResponseEntity.status(HttpStatus.OK).body(songToReturn);
         }
         else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new SongNotFoundException();
         }
     }
     @Operation(summary = "Crea una canción nueva según el cuerpo proporcionado")
@@ -220,8 +221,8 @@ public class SongController {
             }
             else{
                 if(song.getArtistId() != null){
-                    Optional<Artista> artista = artistService.findById(song.getArtistId());
-                    artista.ifPresent(inDbSong::setArtist);
+                    Artista artista = artistService.findById(song.getArtistId());
+                    inDbSong.setArtist(artista);
                 }
                 else{
                     inDbSong.setArtist(null);
