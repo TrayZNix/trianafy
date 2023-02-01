@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.trianafy.dto;
 
+import com.salesianostriana.dam.trianafy.validation.annotation.NombreArtistaUnico;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Builder
 public class ArtistaDtoIn {
+    @NombreArtistaUnico(message = "{ArtistaDtoIn.name.unique}")
     @NotNull
     private String name;
 }

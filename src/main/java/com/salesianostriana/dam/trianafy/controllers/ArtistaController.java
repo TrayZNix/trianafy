@@ -28,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -105,10 +106,7 @@ public class ArtistaController {
                     content = {@Content})
     })
     @PostMapping()
-    public ResponseEntity<Artista> createArtista(@RequestBody ArtistaDtoIn artista){
-        if(artista.getName() == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<Artista> createArtista(@Valid @RequestBody ArtistaDtoIn artista){
         return ResponseEntity.status(HttpStatus.CREATED).body((serviceArtista.add(artistaMapper.toArtist(artista))));
     }
     @Operation(summary = "Modifica un artista según el id y el cuerpo proporcionado")

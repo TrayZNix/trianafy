@@ -6,6 +6,7 @@ com\salesianostriana\dam\trianafy\model\Song$SongBuilder.class
 com\salesianostriana\dam\trianafy\repos\PlaylistRepository.class
 com\salesianostriana\dam\trianafy\dto\ArtistaDtoIn.class
 com\salesianostriana\dam\trianafy\error\model\ApiError.class
+com\salesianostriana\dam\trianafy\validation\annotation\NombreArtistaUnico.class
 com\salesianostriana\dam\trianafy\exception\EmptyPlaylistListException.class
 com\salesianostriana\dam\trianafy\error\GlobalRestControllerAdvice.class
 com\salesianostriana\dam\trianafy\error\model\impl\ApiErrorImpl.class
@@ -47,6 +48,7 @@ com\salesianostriana\dam\trianafy\TrianafyBaseApplication.class
 com\salesianostriana\dam\trianafy\dto\ArtistaDtoOut.class
 com\salesianostriana\dam\trianafy\dto\SongDtoModifiedArtist$SongDtoModifiedArtistBuilder.class
 com\salesianostriana\dam\trianafy\model\Artista$ArtistaBuilder.class
+com\salesianostriana\dam\trianafy\validation\validator\ValidadorNombreUnico.class
 com\salesianostriana\dam\trianafy\error\model\errorattributes\ApiCustomErrorAttributes.class
 com\salesianostriana\dam\trianafy\doc\OpenApiDoc.class
 com\salesianostriana\dam\trianafy\dto\PlaylistDtoOut.class

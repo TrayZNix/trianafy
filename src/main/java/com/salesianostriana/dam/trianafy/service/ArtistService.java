@@ -65,4 +65,8 @@ public class ArtistService {
             return ResponseEntity.ok(mapperArtista.toArtistDto(this.edit(artistaAEditar)));
         }
     }
+
+    public boolean existsByName(String name){
+        return repository.existsByName(name);
+    }
 }
