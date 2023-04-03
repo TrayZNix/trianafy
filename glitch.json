@@ -1,0 +1,10 @@
+{
+  "start": "java -cp target/classes:'target/dependency/*' Main",
+  "install": "echo 'Compilando' && mvn compile",
+  "watch": {
+    "throttle": 500,
+    "install": {
+      "include": ["^pom\\.xml$", "\\.java$"]
+    }
+  }
+}
