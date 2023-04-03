@@ -1,5 +1,5 @@
 {
-  "start": "java -cp target/classes:'target/dependency/*' Main",
+  "start": "java -cp target/classes:'target/dependency/*' TrianafyBaseApplication",
   "install": "echo 'Compilando' && mvn compile",
   "watch": {
     "throttle": 500,
